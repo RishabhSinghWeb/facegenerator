@@ -14,7 +14,7 @@ import json
 import re
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from utils.utils_stylegan2 import convert_images_to_uint8
 from stylegan2_generator import StyleGan2Generator
@@ -141,12 +141,12 @@ def jpg():
 	# image=regenerate(generator, seed=96, w_avg=w_average, truncation_psi=0.5)
 	# return flask.Response(x.getvalue(), mimetype='image/jpg')
 	# print(xx)
-	xx= np.array([([jj[1] for jj in ii[21::21]]) for ii in image[0]][21::21])
+	xx= np.array([([jj[1] for jj in ii[106:1024-104:17]]) for ii in image[0]][183:1024-25:17])
 	xx=np.array(xx, dtype="float32").reshape(1,48,48,1)#/255
 	m=list(model_ethnicity.predict(xx))
 	ethnicity = ['White', 'Black', 'Asian', 'Indian', 'Others'][m.index(max(m))]
 	age = int(model_age.predict(xx)[0][0])//100
-	gender = 'Male' if round(model_gender.predict(xx)[0][0]) else "Female"
+	gender = 'Female' if round(model_gender.predict(xx)[0][0]) else "Male"
 	details=(f'Prediction: {age} year old {ethnicity} {gender}')
 
 	image_name = "image/" + str(time.time()) + ".jpg"
@@ -155,7 +155,7 @@ def jpg():
 	# 	 if filename.startswith('image_'):  # not to remove other images
 	# 		 os.remove('static/' + filename)
 	with open('static/' + image_name, 'w') as f:
-		img.save(f, PIL.Image.registered_extensions()['.JPEG'])
+		img.save(f, PIL.Image.registered_extensions()['.jpg'])
 
 	return flask.render_template_string(
 		"""<html>
