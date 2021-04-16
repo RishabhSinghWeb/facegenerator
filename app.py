@@ -155,7 +155,7 @@ def jpg():
 	# 	 if filename.startswith('image_'):  # not to remove other images
 	# 		 os.remove('static/' + filename)
 	with open('static/' + image_name, 'w') as f:
-		img.save(f, PIL.Image.registered_extensions()['.jpg'])
+		img.save(f, PIL.Image.registered_extensions()['.JPEG'])
 
 	return flask.render_template_string(
 		"""<html>
